@@ -142,7 +142,7 @@
   <tr>
     <td id='add_instructor_as_participant'>
       <input name="assignment_form[assignment][is_instructor_added_as_participant]" type="hidden" value="false"/>
-      <%= check_box_tag('assignment_form[assignment][is_instructor_added_as_participant]', 'true', @assignment_form.assignment.add_instructor_as_participant) %>
+      <%= check_box_tag('assignment_form[assignment][is_instructor_added_as_participant]', 'true', @assignment_form.assignment.is_instructor_added_as_participant) %>
       <%= label_tag('assignment_form[assignment][is_instructor_added_as_participant]', 'Add Yourself As A Participant?') %>
       <img src="/assets/info.png" title='Select if you want to add yourself as a participant'>
     </td>
