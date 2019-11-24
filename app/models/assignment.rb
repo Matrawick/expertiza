@@ -247,6 +247,13 @@ class Assignment < ActiveRecord::Base
     check_condition('review_of_review_allowed_id', topic_id)
   end
 
+  # Determine if instructor wants to add himself as a participant
+  def add_instructor_as_participant(topic_id = nil)
+    if check_condition('is_instructor_added_as_participant', topic_id)
+      add_participant(session[:user].name, false, true, false)
+    end
+  end
+
   def delete(force = nil)
     begin
       maps = ReviewResponseMap.where(reviewed_object_id: self.id)
