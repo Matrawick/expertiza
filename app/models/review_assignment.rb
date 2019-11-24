@@ -35,8 +35,8 @@ module ReviewAssignment
     # remove those teams from candidate list.
     contributor_set = reject_by_same_topic(contributor_set, reviewer) unless self.can_review_same_topic?
 
-    # Add topics for all remaining submissions to a list of available topics for review
     candidate_topics = Set.new
+    # Add topics for all remaining submissions to a list of available topics for review
     contributor_set.each do |contributor|
       candidate_topics.add(signed_up_topic(contributor))
     end
@@ -66,10 +66,10 @@ module ReviewAssignment
     SignUpTopic.find(topic_id)
   end
 
-  def assign_reviewer_dynamically(reviewer, topic)
+  def assign_reviewer_dynamically(reviewer, topic, user_role)
     # The following method raises an exception if not successful which
     # has to be captured by the caller (in review_mapping_controller)
-    contributor = contributor_to_review(reviewer, topic)
+    contributor = contributor_to_review(reviewer, topic, user_role)
     contributor.assign_reviewer(reviewer)
   end
 
@@ -154,13 +154,13 @@ module ReviewAssignment
   end
 
   # Returns a contributor to review if available, otherwise will raise an error
-  def contributor_to_review(reviewer, topic)
+  def contributor_to_review(reviewer, topic, user_role)
     raise 'Please select a topic' if topics? && topic.nil?
     raise 'This assignment does not have topics' if !topics? && topic
     # This condition might happen if the reviewer waited too much time in the
     # select topic page and other students have already selected this topic.
     # Another scenario is someone that deliberately modifies the view.
-    raise 'This topic has too many reviews; please select another one.' if topic && !candidate_topics_to_review(reviewer).include?(topic)
+    raise 'This topic has too many reviews; please select another one.' if (not ['Instructor', 'Teaching Assistant', 'Administrator'].include? user_role) && topic && !candidate_topics_to_review(reviewer).include?(topic)
 
     contributor_set = Array.new(contributors)
     work = topic.nil? ? 'assignment' : 'topic'

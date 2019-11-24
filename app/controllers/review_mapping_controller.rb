@@ -100,7 +100,7 @@ class ReviewMappingController < ApplicationController
         if topic.nil?
           flash[:error] = "No topics are available to review at this time. Please try later."
         else
-          assignment.assign_reviewer_dynamically(reviewer, topic)
+          assignment.assign_reviewer_dynamically(reviewer, topic, params[:user_role])
         end
 
       else # assignment without topic -Yang
