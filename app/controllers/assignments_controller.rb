@@ -273,9 +273,9 @@ class AssignmentsController < ApplicationController
   # Determine if instructor wants to add himself as a participant
   def add_instructor_as_participant()
     if assignment_form_params[:assignment][:is_instructor_added_as_participant] == 1
-      add_participant(params[:user][:name], false, true, false)
+      Assignment.add_participant(params[:user][:name], false, true, false)
     end
-  end
+  end+
 
   def assignment_form_assignment_staggered_deadline?
     if @assignment_form.assignment.staggered_deadline == true
