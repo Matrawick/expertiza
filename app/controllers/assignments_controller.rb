@@ -46,6 +46,8 @@ class AssignmentsController < ApplicationController
         assignment_form_params[:assignment_questionnaire] = ques_array
         assignment_form_params[:due_date] = due_array
         @assignment_form.update(assignment_form_params, current_user)
+        self.id = exist_assignment.id
+        add_instructor_as_participant
         aid = Assignment.find_by(name: @assignment_form.assignment.name).id
         ExpertizaLogger.info "Assignment created: #{@assignment_form.as_json}"
         redirect_to edit_assignment_path aid
@@ -147,6 +149,16 @@ class AssignmentsController < ApplicationController
     end
 
     redirect_to list_tree_display_index_path
+  end
+
+  def add_instructor_as_participant
+    puts "---------------- Inside add_instructor_as_participant---------------"
+    puts params[:add_instructor]
+    if params[:add_instructor]
+      puts "---------------- INside if ---------------"
+      Assignment.add_participant(session[:user].name, true, true, true)
+      #Assig
+    end
   end
 
   def delayed_mailer

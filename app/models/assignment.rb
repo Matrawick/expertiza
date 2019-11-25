@@ -294,14 +294,15 @@ class Assignment < ActiveRecord::Base
   # add a new participant to this assignment
   # manual addition
   # user_name - the user account name of the participant to add
-  def add_participant(user_name, can_submit, can_review, can_take_quiz)
+  def self.add_participant(user_name, can_submit, can_review, can_take_quiz)
     user = User.find_by(name: user_name)
     if user.nil?
       raise "The user account with the name #{user_name} does not exist. Please <a href='" +
         url_for(controller: 'users', action: 'new') + "'>create</a> the user first."
     end
-    participant = AssignmentParticipant.find_by(parent_id: self.id, user_id: user.id)
-    raise "The user #{user.name} is already a participant." if participant
+    puts "------------ Inside add_participant --------"
+    #participant = AssignmentParticipant.find_by(parent_id: self.id, user_id: user.id)
+    #raise "The user #{user.name} is already a participant." if participant
     new_part = AssignmentParticipant.create(parent_id: self.id,
                                             user_id: user.id,
                                             permission_granted: user.master_permission_granted,
