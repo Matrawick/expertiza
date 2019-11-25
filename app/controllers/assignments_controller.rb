@@ -45,7 +45,7 @@ class AssignmentsController < ApplicationController
         end
         assignment_form_params[:assignment_questionnaire] = ques_array
         assignment_form_params[:due_date] = due_array
-        #add_instructor_as_participant #added
+        add_instructor_as_participant #added
         @assignment_form.update(assignment_form_params, current_user)
         aid = Assignment.find_by(name: @assignment_form.assignment.name).id
         ExpertizaLogger.info "Assignment created: #{@assignment_form.as_json}"
@@ -275,7 +275,7 @@ class AssignmentsController < ApplicationController
     if assignment_form_params[:assignment][:is_instructor_added_as_participant] == 1
       Assignment.add_participant(params[:user][:name], false, true, false)
     end
-  end+
+  end
 
   def assignment_form_assignment_staggered_deadline?
     if @assignment_form.assignment.staggered_deadline == true
