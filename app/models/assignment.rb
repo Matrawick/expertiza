@@ -11,6 +11,7 @@ class Assignment < ActiveRecord::Base
   include OnTheFlyCalc
   has_paper_trail
 
+  autocomplete :user, :name
   # When an assignment is created, it needs to
   # be created as an instance of a subclass of the Assignment (model) class;
   # then Rails will "automatically' set the type field to the value that
@@ -245,13 +246,6 @@ class Assignment < ActiveRecord::Base
   # Determine if the next due date from now allows for metareviews
   def metareview_allowed(topic_id = nil)
     check_condition('review_of_review_allowed_id', topic_id)
-  end
-
-  # Determine if instructor wants to add himself as a participant
-  def add_instructor_as_participant(topic_id = nil)
-    if check_condition('is_instructor_added_as_participant', topic_id)
-      add_participant(session[:user].name, false, true, false)
-    end
   end
 
   def delete(force = nil)
