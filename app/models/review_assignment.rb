@@ -100,7 +100,6 @@ module ReviewAssignment
   # (guaranteed by candidate_assignment_teams_to_review method)
   def assign_reviewer_dynamically_no_topic(reviewer, assignment_team)
     raise "There are no more submissions available for that review right now. Try again later." if assignment_team.nil?
-
     assignment_team.assign_reviewer(reviewer)
   end
 
@@ -167,10 +166,14 @@ module ReviewAssignment
 
     # 1) Only consider contributors that worked on this topic; 2) remove reviewer as contributor
     # 3) remove contributors that have not submitted work yet
-    contributor_set.reject! do |contributor|
-      signed_up_topic(contributor) != topic || # both will be nil for assignments with no signup sheet
-          contributor.includes?(reviewer) ||
-          !contributor.has_submissions?
+    if ['Instructor', 'Teaching Assistant', 'Administrator'].include? user_role
+      return contributor_set.sample
+    else
+      contributor_set.reject! do |contributor|
+        signed_up_topic(contributor) != topic || # both will be nil for assignments with no signup sheet
+            contributor.includes?(reviewer) ||
+            !contributor.has_submissions?
+        end
     end
 
     raise "There are no more submissions to review on this #{work}." if contributor_set.empty?

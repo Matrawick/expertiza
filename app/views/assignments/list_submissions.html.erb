@@ -52,14 +52,16 @@
           <td><p style = <%="color:#{team_name_color}"%>><%= team.name %></p>
           <% unless participants.empty? %>
             <% current_role = Role.find(session[:user].role).name %>
+            <% @existing_responses = ReviewResponseMap.where(reviewer_id: session[:user].id, reviewee_id: team.id) %>
             <% if @assignment.get_current_stage()=="Finished" %>
               <%= link_to 'Assign grade', { controller: 'grades', action: 'view_team', id: participants.first.id}, target: '_blank' unless participants.first.nil?%>
-            <% elsif @assignment.get_current_stage()=="review" %>
+            <% elsif @assignment.get_current_stage()=="review" && @existing_responses.empty? %>
               <%= link_to 'Add review', {controller: 'review_mapping', action: 'assign_reviewer_dynamically', assignment_id: @assignment.id, topic_id: topic_id, reviewer_id: current_user, user_role: current_role } %>
             <% else %>
-              <% @sorted_responses = @existing_responses.where(:reviewer_id=>@participant.id, :reviewee_id=>team.id) %>
+              <% @sorted_responses = @existing_responses.where(:reviewer_id=>session[:user].id, :reviewee_id=>team.id) %>
               <% @sorted_responses = @sorted_responses.sort_by {|obj| obj.updated_at} # the latest should be at the last%>
               <% @latest_response = @sorted_responses.last %>
+                    <%= puts @latest_reponse %>
               <%= link_to "Update review", {:controller => 'response', :action => 'new', :id => @latest_response.id} %>
             <% end %>
           <% end %>
