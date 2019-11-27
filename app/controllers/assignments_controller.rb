@@ -2,7 +2,7 @@ class AssignmentsController < ApplicationController
   include AssignmentHelper
   autocomplete :user, :name
   before_action :authorize
-
+  helper_method :view_teaching_assistants
   def action_allowed?
     if %w[edit update list_submissions].include? params[:action]
       assignment = Assignment.find(params[:id])
@@ -45,8 +45,8 @@ class AssignmentsController < ApplicationController
         end
         assignment_form_params[:assignment_questionnaire] = ques_array
         assignment_form_params[:due_date] = due_array
-        #add_instructor_as_participant #added
         @assignment_form.update(assignment_form_params, current_user)
+        add_instructor_as_participant(exist_assignment.id.to_s)     #Calls a method which checks if the instructor wants to add himself as a participant to the newly created assignment
         aid = Assignment.find_by(name: @assignment_form.assignment.name).id
         ExpertizaLogger.info "Assignment created: #{@assignment_form.as_json}"
         redirect_to edit_assignment_path aid
@@ -92,7 +92,9 @@ class AssignmentsController < ApplicationController
     retrieve_assignment_form
     handle_current_user_timezonepref_nil
     update_feedback_assignment_form_attributes
+    add_instructor_as_participant(@assignment_form.assignment.id.to_s)
     redirect_to edit_assignment_path @assignment_form.assignment.id
+
   end
 
   def show
@@ -148,6 +150,14 @@ class AssignmentsController < ApplicationController
     end
 
     redirect_to list_tree_display_index_path
+  end
+
+  #Method which checks if the instructor wants to add himself as a participant to the newly created assignment
+  def add_instructor_as_participant(assignment_id)
+    if assignment_form_params[:add_instructor] != nil                               #Checks if the "Add as a participant?" checkbox has been selected
+      current_assignment = Object.const_get("Assignment").find(assignment_id)       #Returns object of the newly created assignment
+      current_assignment.add_participant(session[:user].name, true, true, true)     #Adds the instructor as a participant
+    end
   end
 
   def delayed_mailer
@@ -269,13 +279,6 @@ class AssignmentsController < ApplicationController
     @participants_count = @assignment_form.assignment.participants.size
     @teams_count = @assignment_form.assignment.teams.size
   end
-
-  # Determine if instructor wants to add himself as a participant
-  #def add_instructor_as_participant()
-   # if assignment_form_params[:assignment][:is_instructor_added_as_participant] == 1
-    #  Assignment.add_participant(params[:user][:name], false, true, false)
-    #end
-  #end
 
   def assignment_form_assignment_staggered_deadline?
     if @assignment_form.assignment.staggered_deadline == true
