@@ -11,7 +11,6 @@ class Assignment < ActiveRecord::Base
   include OnTheFlyCalc
   has_paper_trail
 
-  autocomplete :user, :name
   # When an assignment is created, it needs to
   # be created as an instance of a subclass of the Assignment (model) class;
   # then Rails will "automatically' set the type field to the value that
