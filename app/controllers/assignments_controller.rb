@@ -92,7 +92,6 @@ class AssignmentsController < ApplicationController
     retrieve_assignment_form
     handle_current_user_timezonepref_nil
     update_feedback_assignment_form_attributes
-    add_instructor_as_participant(@assignment_form.assignment.id.to_s)
     redirect_to edit_assignment_path @assignment_form.assignment.id
 
   end
