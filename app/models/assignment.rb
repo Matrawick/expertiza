@@ -11,7 +11,6 @@ class Assignment < ActiveRecord::Base
   include OnTheFlyCalc
   has_paper_trail
 
-  autocomplete :user, :name
   # When an assignment is created, it needs to
   # be created as an instance of a subclass of the Assignment (model) class;
   # then Rails will "automatically' set the type field to the value that
@@ -209,7 +208,7 @@ class Assignment < ActiveRecord::Base
     path_text = ""
     path_text = if !self.course_id.nil? && self.course_id > 0
                   Rails.root.to_s + '/pg_data/' + FileHelper.clean_path(self.instructor[:name]) + '/' +
-                    FileHelper.clean_path(self.course.directory_path) + '/'
+                      FileHelper.clean_path(self.course.directory_path) + '/'
                 else
                   Rails.root.to_s + '/pg_data/' + FileHelper.clean_path(self.instructor[:name]) + '/'
                 end
@@ -299,7 +298,7 @@ class Assignment < ActiveRecord::Base
     user = User.find_by(name: user_name)
     if user.nil?
       raise "The user account with the name #{user_name} does not exist. Please <a href='" +
-        url_for(controller: 'users', action: 'new') + "'>create</a> the user first."
+                url_for(controller: 'users', action: 'new') + "'>create</a> the user first."
     end
     participant = AssignmentParticipant.find_by(parent_id: self.id, user_id: user.id)
     raise "The user #{user.name} is already a participant." if participant
@@ -508,11 +507,11 @@ class Assignment < ActiveRecord::Base
   def self.check_empty_rounds(answers, round_num, res_type)
     unless answers[round_num][res_type].empty?
       round_type =
-        if round_num.nil?
-          "Round Nill - " + res_type
-        else
-          "Round " + round_num.to_s + " - " + res_type.to_s
-        end
+          if round_num.nil?
+            "Round Nill - " + res_type
+          else
+            "Round " + round_num.to_s + " - " + res_type.to_s
+          end
       return round_type
     end
     nil
@@ -572,8 +571,8 @@ class Assignment < ActiveRecord::Base
   def self.export_data_fields(options)
     if options['team_score'] == 'true'
       team[:scores] ?
-        tcsv.push(team[:scores][:max], team[:scores][:min], team[:scores][:avg]) :
-        tcsv.push('---', '---', '---')
+          tcsv.push(team[:scores][:max], team[:scores][:min], team[:scores][:avg]) :
+          tcsv.push('---', '---', '---')
     end
     review_hype_mapping_hash = {review: 'submitted_score',
                                 metareview: 'metareview_score',
