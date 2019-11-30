@@ -351,18 +351,15 @@ class AssignmentForm
     end
   end
 
-  def is_instructor_a_participant?(user_id)
-      if @assignment.id == nil
-        return false
-      else
-        @is_instructor_a_participant = Participant.where("user_id LIKE '#{user_id}' and parent_id LIKE '#{@assignment.id}' " )
+  def is_instructor_a_participant?(instructor_id)
+      if @assignment.id != nil
+        @is_instructor_a_participant = Participant.where("user_id LIKE '#{instructor_id_id}' and parent_id LIKE '#{@assignment.id}' " )
         if @is_instructor_a_participant.present?
-          puts "-------------------heyehyegye-----------"
           return true
         end
-      end
 
-    return false
+      return false
+      end
   end
 
 end
