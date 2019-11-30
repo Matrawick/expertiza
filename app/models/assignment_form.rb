@@ -355,7 +355,8 @@ class AssignmentForm
       if @assignment.id == nil
         return false
       else
-        puts user_id + @assignment.id
+        puts user_id
+        puts @assignment.id
         puts Participant.where("user_id LIKE '#{user_id}' and parent_id LIKE '#{@assignment.id}' " )
         return true
       end
