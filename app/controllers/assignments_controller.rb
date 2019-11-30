@@ -388,7 +388,18 @@ class AssignmentsController < ApplicationController
     ExpertizaLogger.info LoggerMessage.new("", session[:user].name, "The assignment was saved: #{@assignment_form.as_json}", request)
   end
 
+  def is_instructor_a_participant?
+    if @assignment.id == nil
+      return false
+    else
+      puts session[:user].id + @assignment.id
+      puts Participant.where("user_id LIKE '#{session[:user].id}' and parent_id LIKE '#{@assignment.id}' " )
+      return true
+    end
+  end
+
   def assignment_form_params
     params.require(:assignment_form).permit!
   end
 end
+
