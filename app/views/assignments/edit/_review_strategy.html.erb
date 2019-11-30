@@ -145,7 +145,7 @@
   <tr> <% puts '-------------------' %>
     <td> <% %>
       <input name='add_instructor' type="hidden" value="false"/>
-      <%= check_box_tag('add_instructor', @assignment_form.is_instructor_a_participant?(session[:user].id)) %>
+      <%= check_box_tag('add_instructor', value = "1", checked = @assignment_form.is_instructor_a_participant?(session[:user].id)) %>
       <%= label_tag('add_instructor', 'Add yourself as a participant?') %>
       <img src="/assets/info.png" title='Select if you want to add yourself as a participant to this assignment'>
     </td>
