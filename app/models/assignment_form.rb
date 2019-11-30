@@ -2,7 +2,7 @@
 require 'active_support/time_with_zone'
 
 class AssignmentForm
-  attr_accessor :assignment, :assignment_questionnaires, :due_dates, :tag_prompt_deployments
+  attr_accessor :assignment, :assignment_questionnaires, :due_dates, :tag_prompt_deployments, :participant
   attr_accessor :errors
 
   DEFAULT_MAX_TEAM_SIZE = 1
@@ -355,6 +355,8 @@ class AssignmentForm
       if @assignment.id == nil
         return false
       else
+        puts session[:user].id + @assignment.id
+        puts Participant.where("user_id LIKE '#{session[:user].id}' and parent_id LIKE '#{@assignment.id}' " )
         return true
       end
   end
