@@ -352,7 +352,7 @@ class AssignmentForm
   end
 
   def is_instructor_a_participant
-    puts "hello"
+      puts @assignment.id
     return true
   end
 
