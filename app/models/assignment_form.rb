@@ -351,13 +351,13 @@ class AssignmentForm
     end
   end
 
+  # This method returns true if the instructor is already added as a participant to the assignment which he/she is editing
   def is_instructor_a_participant?(instructor_id)
       if @assignment.id != nil
         @is_instructor_a_participant = Participant.where("user_id LIKE '#{instructor_id}' and parent_id LIKE '#{@assignment.id}' " )
         if @is_instructor_a_participant.present?
           return true
         end
-
       return false
       end
   end
