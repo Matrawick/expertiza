@@ -1,4 +1,4 @@
-
+autocomplete :user
 require 'active_support/time_with_zone'
 
 class AssignmentForm
