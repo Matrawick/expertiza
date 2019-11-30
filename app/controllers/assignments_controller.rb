@@ -158,7 +158,6 @@ class AssignmentsController < ApplicationController
 
   #Method which checks if the instructor wants to add himself as a participant to the newly created assignment
   def add_instructor_as_participant(assignment_id)
-    puts "Add instructor ? " + params[:add_instructor].to_s
     if params[:add_instructor] == '1'                              #Checks if the "Add as a participant?" checkbox has been selected
       current_assignment = Object.const_get("Assignment").find(assignment_id)       #Returns object of the newly created assignment
       current_assignment.add_participant(session[:user].name, true, true, true)     #Adds the instructor as a participant
