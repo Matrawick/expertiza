@@ -4,7 +4,6 @@ require 'active_support/time_with_zone'
 class AssignmentForm
   attr_accessor :assignment, :assignment_questionnaires, :due_dates, :tag_prompt_deployments, :participant
   attr_accessor :errors
-  autocomplete :user
 
   DEFAULT_MAX_TEAM_SIZE = 1
 
