@@ -92,8 +92,8 @@ class AssignmentsController < ApplicationController
     retrieve_assignment_form
     handle_current_user_timezonepref_nil
     update_feedback_assignment_form_attributes
-    puts 'output - ' +AssignmentForm.new.is_instructor_a_participant?(session[:user].id)
-    if !AssignmentForm.new.is_instructor_a_participant?(session[:user].id)
+    #puts 'output - ' +AssignmentForm.new.is_instructor_a_participant?(session[:user].id)
+    if AssignmentForm.new.is_instructor_a_participant?(session[:user].id).nil?
       puts "i am in "
       add_instructor_as_participant(@assignment_form.assignment.id.to_s)
     end
