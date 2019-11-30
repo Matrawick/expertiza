@@ -2,7 +2,7 @@ class AssignmentsController < ApplicationController
   include AssignmentHelper
   autocomplete :user, :name
   before_action :authorize
-  helper_method :view_teaching_assistants
+
   def action_allowed?
     if %w[edit update list_submissions].include? params[:action]
       assignment = Assignment.find(params[:id])
@@ -154,7 +154,6 @@ class AssignmentsController < ApplicationController
 
   #Method which checks if the instructor wants to add himself as a participant to the newly created assignment
   def add_instructor_as_participant(assignment_id)
-    puts "-----------" +params[:add_instructor]
     if params[:add_instructor] == '1'                              #Checks if the "Add as a participant?" checkbox has been selected
       current_assignment = Object.const_get("Assignment").find(assignment_id)       #Returns object of the newly created assignment
       current_assignment.add_participant(session[:user].name, true, true, true)     #Adds the instructor as a participant

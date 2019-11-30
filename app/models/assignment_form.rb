@@ -350,4 +350,10 @@ class AssignmentForm
       )
     end
   end
+
+  def is_instructor_a_participant?
+    puts "hello"
+    return true
+  end
+
 end
