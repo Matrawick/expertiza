@@ -355,7 +355,8 @@ class AssignmentForm
       if @assignment.id == nil
         return false
       else
-        if Participant.where("user_id LIKE '#{user_id}' and parent_id LIKE '#{@assignment.id}' " )
+        @is_instructor_a_participant = Participant.where("user_id LIKE '#{user_id}' and parent_id LIKE '#{@assignment.id}' " )
+        if @is_instructor_a_participant.present?
           puts "-------------------heyehyegye-----------"
           return true
         end
