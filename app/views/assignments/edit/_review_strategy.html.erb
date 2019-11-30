@@ -142,8 +142,8 @@
   </tr>
 
   <!-- Checkbox provides an option to the instructor to add himself as a participant-->
-  <tr>
-    <td> <% puts @assignment_form.is_instructor_a_participant? %>
+  <tr> <% puts session[:user].id %>
+    <td> <% puts session[:user].id + @assignment_form.is_instructor_a_participant? %>
       <input name='add_instructor' type="hidden" value="false"/>
       <%= check_box_tag('add_instructor', false, @assignment_form.is_instructor_a_participant?) %>
       <%= label_tag('add_instructor', 'Add yourself as a participant?') %>
