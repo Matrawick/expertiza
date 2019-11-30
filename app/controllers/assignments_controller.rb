@@ -93,6 +93,7 @@ class AssignmentsController < ApplicationController
     handle_current_user_timezonepref_nil
     update_feedback_assignment_form_attributes
     if !AssignmentForm.new.is_instructor_a_participant?(session[:user].id)
+      puts "i am in "
       add_instructor_as_participant(@assignment_form.assignment.id.to_s)
     end
     redirect_to edit_assignment_path @assignment_form.assignment.id
