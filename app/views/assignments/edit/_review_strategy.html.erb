@@ -37,7 +37,7 @@
     </td>
   </tr>
   <tr>
-    <td> <%= @assignment_form.assignment.is_instructor_a_participant? %>>
+    <td>
       <%= check_box_tag('review', 'true', true, {:onChange => 'hasReviewChanged()'}) %>
       <%= label_tag('review', 'Has Max Review Limit?') %>
       <img src="/assets/info.png" title='You can select whether the particular submission needs to have maximum limit for review or not.'>
@@ -143,7 +143,7 @@
 
   <!-- Checkbox provides an option to the instructor to add himself as a participant-->
   <tr>
-    <td> <% temp %>
+    <td> <% @assignment_form.assignment.is_instructor_a_participant %>
       <input name='add_instructor' type="hidden" value="false"/>
       <%= check_box_tag('add_instructor') %>
       <%= label_tag('add_instructor', 'Add yourself as a participant?') %>
