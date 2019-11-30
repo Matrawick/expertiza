@@ -351,9 +351,11 @@ class AssignmentForm
     end
   end
 
-  def is_instructor_a_participant
+  def is_instructor_a_participant?
       if @assignment.id == nil
-        puts "Hi"
+        return false
+      else
+        return true
       end
   end
 
