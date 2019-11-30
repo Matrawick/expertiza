@@ -351,12 +351,12 @@ class AssignmentForm
     end
   end
 
-  def is_instructor_a_participant?
+  def is_instructor_a_participant?(user_id)
       if @assignment.id == nil
         return false
       else
-        puts session[:user].id + @assignment.id
-        puts Participant.where("user_id LIKE '#{session[:user].id}' and parent_id LIKE '#{@assignment.id}' " )
+        puts user_id + @assignment.id
+        puts Participant.where("user_id LIKE '#{user_id}' and parent_id LIKE '#{@assignment.id}' " )
         return true
       end
   end
