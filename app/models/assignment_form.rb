@@ -358,8 +358,8 @@ class AssignmentForm
         if @is_instructor_a_participant.present?
           return true
         end
-      return false
       end
+      return false
   end
 
 end

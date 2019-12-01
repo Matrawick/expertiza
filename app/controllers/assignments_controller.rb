@@ -155,8 +155,10 @@ class AssignmentsController < ApplicationController
 
   #Method which checks if the instructor wants to add himself as a participant to the newly created assignment
   def add_instructor_as_participant(assignment_id)
-    puts '------------'
-    puts params[:add_instructor] == '0'
+    puts '------------ check'
+    puts params[:add_instructor]
+    puts AssignmentForm.new.is_instructor_a_participant?(session[:user].id)
+    puts '------------ check'
     if params[:add_instructor] == '0' and AssignmentForm.new.is_instructor_a_participant?(session[:user].id) == true
       delete_instructor_as_participant(assignment_id ,session[:user].id )
     elsif params[:add_instructor] == '1' and AssignmentForm.new.is_instructor_a_participant?(session[:user].id) == false                        #Checks if the "Add as a participant?" checkbox has been selected
