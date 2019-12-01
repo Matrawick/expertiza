@@ -198,6 +198,7 @@ class ParticipantsController < ApplicationController
   end
 
   # Get the user info from the team user
+  # Get the user info from the team user
   def get_user_info(team_user, assignment)
     user = {}
     user[:name] = team_user.name
