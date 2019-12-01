@@ -179,8 +179,13 @@ class AssignmentsController < ApplicationController
   end
 
   def delete_instructor_as_participant(assignment_id , instructor_id)
-    participant = Participant.where(user_id: instructor_id , parent_id: assignment_id)
-    participant.destroy(params[:id])
+    puts'Instr'
+    puts instructor_id
+    puts 'ass'
+    puts assignment_id
+    Participant.where(user_id: instructor_id , parent_id: assignment_id).destroy_all
+    #DueDate.where(parent_id: params[:id], deadline_type_id: 5).destroy_all
+    #participant.destroy(params[:id])
   end
 
   def delayed_mailer
