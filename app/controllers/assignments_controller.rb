@@ -179,9 +179,9 @@ class AssignmentsController < ApplicationController
   end
 
     def delete_instructor_as_participant(assignment_id , instructor_id)
-      participant = Participant.where(user_id: instructor_id , parent_id: assignment_id)
+      @participant = Participant.where(user_id: instructor_id , parent_id: assignment_id)
       begin
-        participant.destroy
+        @participant.destroy
       rescue StandardError
 
       end
