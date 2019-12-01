@@ -207,8 +207,7 @@ class Assignment < ActiveRecord::Base
     end
     path_text = ""
     path_text = if !self.course_id.nil? && self.course_id > 0
-                  Rails.root.to_s + '/pg_data/' + FileHelper.clean_path(self.instructor[:name]) + '/' +
-                      FileHelper.clean_path(self.course.directory_path) + '/'
+                  Rails.root.to_s + '/pg_data/' + FileHelper.clean_path(self.instructor[:name]) + '/' + FileHelper.clean_path(self.course.directory_path) + '/'
                 else
                   Rails.root.to_s + '/pg_data/' + FileHelper.clean_path(self.instructor[:name]) + '/'
                 end
@@ -297,8 +296,7 @@ class Assignment < ActiveRecord::Base
   def add_participant(user_name, can_submit, can_review, can_take_quiz)
     user = User.find_by(name: user_name)
     if user.nil?
-      raise "The user account with the name #{user_name} does not exist. Please <a href='" +
-                url_for(controller: 'users', action: 'new') + "'>create</a> the user first."
+      raise "The user account with the name #{user_name} does not exist. Please <a href='" + url_for(controller: 'users', action: 'new') + "'>create</a> the user first."
     end
     participant = AssignmentParticipant.find_by(parent_id: self.id, user_id: user.id)
     raise "The user #{user.name} is already a participant." if participant

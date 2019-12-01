@@ -127,8 +127,6 @@ class Participant < ActiveRecord::Base
     participants.sort_by {|p| users.map(&:id).index(p.user_id) }
   end
 
-
-
   # provide export functionality for Assignment Participants and Course Participants
   def self.export(csv, parent_id, options)
     where(parent_id: parent_id).find_each do |part|

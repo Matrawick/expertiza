@@ -153,8 +153,6 @@ class ParticipantsController < ApplicationController
     end
   end
 
-
-
   def delete_assignment_participant
     contributor = AssignmentParticipant.find(params[:id])
     name = contributor.name
@@ -199,7 +197,6 @@ class ParticipantsController < ApplicationController
                                         :time_stamp, :digital_signature, :duty, :can_take_quiz)
   end
 
-  # Get the user info from the team user
   # Get the user info from the team user
   def get_user_info(team_user, assignment)
     user = {}
