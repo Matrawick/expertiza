@@ -93,10 +93,7 @@ class AssignmentsController < ApplicationController
     handle_current_user_timezonepref_nil
     update_feedback_assignment_form_attributes
     #puts 'output - ' +AssignmentForm.new.is_instructor_a_participant?(session[:user].id)
-    if AssignmentForm.new.is_instructor_a_participant?(session[:user].id).nil?
-      puts "i am in "
-      add_instructor_as_participant(@assignment_form.assignment.id.to_s)
-    end
+    add_instructor_as_participant(@assignment_form.assignment.id.to_s)
     redirect_to edit_assignment_path @assignment_form.assignment.id
 
   end
@@ -158,11 +155,25 @@ class AssignmentsController < ApplicationController
 
   #Method which checks if the instructor wants to add himself as a participant to the newly created assignment
   def add_instructor_as_participant(assignment_id)
-    if params[:add_instructor] == '1'                              #Checks if the "Add as a participant?" checkbox has been selected
+    puts '------------'
+    puts params[:add_instructor] == '0'
+    if params[:add_instructor] == '0' and AssignmentForm.new.is_instructor_a_participant?(session[:user].id) == true
+      delete_instructor_as_participant(assignment_id ,session[:user].id )
+    elsif params[:add_instructor] == '1' and AssignmentForm.new.is_instructor_a_participant?(session[:user].id) == false                        #Checks if the "Add as a participant?" checkbox has been selected
       current_assignment = Object.const_get("Assignment").find(assignment_id)       #Returns object of the newly created assignment
       current_assignment.add_participant(session[:user].name, true, true, true)     #Adds the instructor as a participant
     end
   end
+    def delete_instructor_as_participant(assignment_id , user_id)
+      participant = Participant.find(user_id)
+      parent id = assignment_id
+      begin
+        participant.destroy
+        flash[:note] = undo_link("The user \"#{participant.user.name}\" has been successfully removed as a participant.")
+      rescue StandardError
+        flash[:error] = 'The delete action failed: At least one review mapping or team membership exist for this participant.'
+      end
+    end
 
   def delayed_mailer
     @suggestions = Suggestion.where(assignment_id: params[:id])
