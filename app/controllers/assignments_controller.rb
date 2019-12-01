@@ -180,9 +180,9 @@ class AssignmentsController < ApplicationController
 
 
   def delete_instructor_as_participant(assignment_id , instructor_id)
-    #participant = Participant.where(user_id: instructor_id , parent_id: assignment_id)
+    @participant = Participant.where(user_id: instructor_id , parent_id: assignment_id)
     participant = Participant.find(params[:id])
-    Participant.where(user_id: instructor_id , parent_id: assignment_id).destroy
+    @participant.destroy
   end
 
   def destroy
