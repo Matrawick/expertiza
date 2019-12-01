@@ -352,10 +352,9 @@ class AssignmentForm
   end
 
   # This method returns true if the instructor is already added as a participant to the assignment which he/she is editing
-  def is_instructor_a_participant?(instructor_id)
+  def is_instructor_a_participant?(instructor_id,assignment_id)
       if @assignment.id != nil
-        puts 'IAss id : ' + @assignment.id
-        @is_instructor_a_participant = Participant.where(user_id: instructor_id , parent_id: @assignment.id)
+        @is_instructor_a_participant = Participant.where(user_id: instructor_id , parent_id: assignment_id)
         puts 'Instructor name :' + @is_instructor_a_participant.parent_id
         if !@is_instructor_a_participant.blank?
           return true

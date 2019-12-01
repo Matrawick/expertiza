@@ -157,11 +157,11 @@ class AssignmentsController < ApplicationController
     puts '------------ checkbox value'
     puts params[:add_instructor]
     puts '---------- Is instructor a participant? '
-    puts AssignmentForm.new.is_instructor_a_participant?(session[:user].id)
+    puts AssignmentForm.new.is_instructor_a_participant?(session[:user].id,assignment_id)
     if params[:add_instructor] == false and AssignmentForm.new.is_instructor_a_participant?(session[:user].id) == true
       puts 'Deleting'
       delete_instructor_as_participant(assignment_id ,session[:user].id )
-    elsif params[:add_instructor] == '1' and AssignmentForm.new.is_instructor_a_participant?(session[:user].id) == false
+    elsif params[:add_instructor] == '1' and AssignmentForm.new.is_instructor_a_participant?(session[:user].id,assignment_id) == false
       puts 'Adding' #Checks if the "Add as a participant?" checkbox has been selected
       current_assignment = Object.const_get("Assignment").find(assignment_id)       #Returns object of the newly created assignment
       current_assignment.add_participant(session[:user].name, true, true, true)     #Adds the instructor as a participant
