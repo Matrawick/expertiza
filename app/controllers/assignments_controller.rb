@@ -179,8 +179,7 @@ class AssignmentsController < ApplicationController
   end
 
     def delete_instructor_as_participant(assignment_id , user_id)
-      participant = Participant.find(user_id)
-      parent id = assignment_id
+      participant = Participant.find(user_id: user_id , parent_id: assignment_id)
       begin
         participant.destroy
       rescue StandardError
