@@ -160,7 +160,7 @@ class AssignmentsController < ApplicationController
     puts is_instructor_a_participant?(session[:user].id,assignment_id)
     if params[:add_instructor] == 'false' and is_instructor_a_participant?(session[:user].id,assignment_id) == true
       puts 'Deleting'
-      Participant.new.delete_instructor_as_participant(assignment_id ,session[:user].id)
+      delete_instructor_as_participant(assignment_id,session[:user].id)
     elsif params[:add_instructor] == '1' and is_instructor_a_participant?(session[:user].id,assignment_id) == false
       puts 'Adding' #Checks if the "Add as a participant?" checkbox has been selected
       current_assignment = Object.const_get("Assignment").find(assignment_id)       #Returns object of the newly created assignment
@@ -178,6 +178,10 @@ class AssignmentsController < ApplicationController
     return false
   end
 
+  def delete_instructor_as_participant(assignment_id , instructor_id)
+    participant = Participant.where(user_id: instructor_id , parent_id: assignment_id)
+    participant.destroy
+  end
 
   def delayed_mailer
     @suggestions = Suggestion.where(assignment_id: params[:id])
