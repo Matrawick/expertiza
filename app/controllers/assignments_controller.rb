@@ -155,11 +155,9 @@ class AssignmentsController < ApplicationController
 
   #Method which checks if the instructor wants to add himself as a participant to the newly created assignment
   def add_instructor_as_participant(assignment_id)
-    puts '------------ check'
+    puts '------------ checkbox'
     puts params[:add_instructor]
-    puts AssignmentForm.new.is_instructor_a_participant?(session[:user].id)
-    puts '------------ check'
-    if params[:add_instructor] == '0' and AssignmentForm.new.is_instructor_a_participant?(session[:user].id) == true
+    if params[:add_instructor] == false and AssignmentForm.new.is_instructor_a_participant?(session[:user].id) == true
       delete_instructor_as_participant(assignment_id ,session[:user].id )
     elsif params[:add_instructor] == '1' and AssignmentForm.new.is_instructor_a_participant?(session[:user].id) == false                        #Checks if the "Add as a participant?" checkbox has been selected
       current_assignment = Object.const_get("Assignment").find(assignment_id)       #Returns object of the newly created assignment
@@ -171,9 +169,8 @@ class AssignmentsController < ApplicationController
       parent id = assignment_id
       begin
         participant.destroy
-        flash[:note] = undo_link("The user \"#{participant.user.name}\" has been successfully removed as a participant.")
       rescue StandardError
-        flash[:error] = 'The delete action failed: At least one review mapping or team membership exist for this participant.'
+
       end
     end
 
