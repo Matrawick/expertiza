@@ -171,8 +171,7 @@ class AssignmentsController < ApplicationController
   def is_instructor_a_participant?(instructor_id,assignment_id)
     if assignment_id != nil
       @is_instructor_a_participant = Participant.where(user_id: instructor_id , parent_id: assignment_id)
-      puts 'Instructor name :' + @is_instructor_a_participant.parent_id
-      if !@is_instructor_a_participant.blank?
+      if @is_instructor_a_participant.present?
         return true
       end
     end
