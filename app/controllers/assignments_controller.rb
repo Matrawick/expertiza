@@ -92,7 +92,6 @@ class AssignmentsController < ApplicationController
     retrieve_assignment_form
     handle_current_user_timezonepref_nil
     update_feedback_assignment_form_attributes
-    #puts 'output - ' +AssignmentForm.new.is_instructor_a_participant?(session[:user].id)
     add_instructor_as_participant(@assignment_form.assignment.id.to_s)
     redirect_to edit_assignment_path @assignment_form.assignment.id
   end
@@ -152,23 +151,19 @@ class AssignmentsController < ApplicationController
     redirect_to list_tree_display_index_path
   end
 
-  #Method which checks if the instructor wants to add himself as a participant to the newly created assignment
   def add_instructor_as_participant(assignment_id)
-    puts '------------ checkbox value'
-    puts params[:add_instructor]
-    puts '---------- Is instructor a participant? '
-    puts is_instructor_a_participant?(session[:user].id,assignment_id)
-    if params[:add_instructor] == 'false' and is_instructor_a_participant?(session[:user].id,assignment_id) == true
-      puts 'Deleting'
+    if params[:add_instructor] == 'false' and is_instructor_a_participant? == true
       delete_instructor_as_participant(assignment_id,session[:user].id)
-    elsif params[:add_instructor] == '1' and is_instructor_a_participant?(session[:user].id,assignment_id) == false
-      puts 'Adding' #Checks if the "Add as a participant?" checkbox has been selected
-      current_assignment = Object.const_get("Assignment").find(assignment_id)       #Returns object of the newly created assignment
-      current_assignment.add_participant(session[:user].name, true, true, true)     #Adds the instructor as a participant
+    elsif params[:add_instructor] == '1' and is_instructor_a_participant? == false
+      current_assignment = Object.const_get("Assignment").find(assignment_id)
+      current_assignment.add_participant(session[:user].name, true, true, true)
     end
   end
 
-  def is_instructor_a_participant?(instructor_id,assignment_id = @assignment_form.assignment.id.to_s )
+  def is_instructor_a_participant?
+    instructor_id = session[:user].id
+    assignment_id = @assignment_form.assignment.id.to_s
+
     if assignment_id != nil
       @is_instructor_a_participant = Participant.where(user_id: instructor_id , parent_id: assignment_id)
       if @is_instructor_a_participant.present?
@@ -179,13 +174,7 @@ class AssignmentsController < ApplicationController
   end
 
   def delete_instructor_as_participant(assignment_id , instructor_id)
-    puts'Instr'
-    puts instructor_id
-    puts 'ass'
-    puts assignment_id
     Participant.where(user_id: instructor_id , parent_id: assignment_id).destroy_all
-    #DueDate.where(parent_id: params[:id], deadline_type_id: 5).destroy_all
-    #participant.destroy(params[:id])
   end
 
   def delayed_mailer

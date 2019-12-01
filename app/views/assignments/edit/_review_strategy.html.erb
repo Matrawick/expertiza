@@ -141,13 +141,12 @@
     </td>
   </tr>
 
-  <!-- Checkbox provides an option to the instructor to add himself as a participant-->
   <tr>
-    <td> <% %>
+    <td>
       <input name='add_instructor' type="hidden" value="false"/>
-      <%= check_box_tag('add_instructor', value = "1", checked = is_instructor_a_participant?(session[:user].id)) %>
+      <%= check_box_tag('add_instructor', value = "1", checked = is_instructor_a_participant?)%>
       <%= label_tag('add_instructor', 'Add yourself as a participant?') %>
-      <img src="/assets/info.png" title='Select if you want to add yourself as a participant to this assignment'>
+      <img src="/assets/info.png" title='If you add yourself as a participant then you will be able to perform student reviews for this assignment'>
     </td>
   </tr>
 
