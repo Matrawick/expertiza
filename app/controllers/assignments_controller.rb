@@ -180,22 +180,11 @@ class AssignmentsController < ApplicationController
 
 
   def delete_instructor_as_participant(assignment_id , instructor_id)
-    @participant = Participant.where(user_id: instructor_id , parent_id: assignment_id)
-    participant = Participant.find(params[:id])
-    @participant.destroy
+    participant = Participant.where(user_id: instructor_id , parent_id: assignment_id)
+    #participant = Participant.find(params[:id])
+    participant.destroy
   end
 
-  def destroy
-    participant = Participant.find(params[:id])
-    parent_id = participant.parent_id
-    begin
-      participant.destroy
-      flash[:note] = undo_link("The user \"#{participant.user.name}\" has been successfully removed as a participant.")
-    rescue StandardError
-      flash[:error] = 'The delete action failed: At least one review mapping or team membership exist for this participant.'
-    end
-    redirect_to action: 'list', id: parent_id, model: participant.class.to_s.gsub("Participant", "")
-  end
 
   def delayed_mailer
     @suggestions = Suggestion.where(assignment_id: params[:id])
