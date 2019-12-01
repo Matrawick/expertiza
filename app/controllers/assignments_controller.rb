@@ -158,7 +158,7 @@ class AssignmentsController < ApplicationController
     puts params[:add_instructor]
     puts '---------- Is instructor a participant? '
     puts AssignmentForm.new.is_instructor_a_participant?(session[:user].id,assignment_id)
-    if params[:add_instructor] == false and AssignmentForm.new.is_instructor_a_participant?(session[:user].id) == true
+    if params[:add_instructor] == false and AssignmentForm.new.is_instructor_a_participant?(session[:user].id,assignment_id) == true
       puts 'Deleting'
       delete_instructor_as_participant(assignment_id ,session[:user].id )
     elsif params[:add_instructor] == '1' and AssignmentForm.new.is_instructor_a_participant?(session[:user].id,assignment_id) == false
