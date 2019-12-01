@@ -127,6 +127,15 @@ class Participant < ActiveRecord::Base
     participants.sort_by {|p| users.map(&:id).index(p.user_id) }
   end
 
+  def self.delete_instructor_as_participant(assignment_id , instructor_id)
+    @participant = Participant.where(user_id: instructor_id , parent_id: assignment_id)
+    begin
+      @participant.destroy
+    rescue StandardError
+
+    end
+  end
+
   # provide export functionality for Assignment Participants and Course Participants
   def self.export(csv, parent_id, options)
     where(parent_id: parent_id).find_each do |part|
