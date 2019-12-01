@@ -95,7 +95,6 @@ class AssignmentsController < ApplicationController
     #puts 'output - ' +AssignmentForm.new.is_instructor_a_participant?(session[:user].id)
     add_instructor_as_participant(@assignment_form.assignment.id.to_s)
     redirect_to edit_assignment_path @assignment_form.assignment.id
-
   end
 
   def show
@@ -155,11 +154,15 @@ class AssignmentsController < ApplicationController
 
   #Method which checks if the instructor wants to add himself as a participant to the newly created assignment
   def add_instructor_as_participant(assignment_id)
-    puts '------------ checkbox'
+    puts '------------ checkbox value'
     puts params[:add_instructor]
+    puts '---------- Is instructor a participant? '
+    puts AssignmentForm.new.is_instructor_a_participant?(session[:user].id)
     if params[:add_instructor] == false and AssignmentForm.new.is_instructor_a_participant?(session[:user].id) == true
+      puts 'Deleting'
       delete_instructor_as_participant(assignment_id ,session[:user].id )
-    elsif params[:add_instructor] == '1' and AssignmentForm.new.is_instructor_a_participant?(session[:user].id) == false                        #Checks if the "Add as a participant?" checkbox has been selected
+    elsif params[:add_instructor] == '1' and AssignmentForm.new.is_instructor_a_participant?(session[:user].id) == false
+      puts 'Adding' #Checks if the "Add as a participant?" checkbox has been selected
       current_assignment = Object.const_get("Assignment").find(assignment_id)       #Returns object of the newly created assignment
       current_assignment.add_participant(session[:user].name, true, true, true)     #Adds the instructor as a participant
     end
