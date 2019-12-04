@@ -1,7 +1,7 @@
 describe AssignmentsController do
   let(:assignment) do
     build(:assignment, id: 1, name: 'test assignment', instructor_id: 6, staggered_deadline: true, directory_path: 'same path',
-                       participants: [build(:participant)], teams: [build(:assignment_team)], course_id: 1)
+          participants: [build(:participant)], teams: [build(:assignment_team)], course_id: 1)
   end
   let(:assignment_form) { double('AssignmentForm', assignment: assignment) }
   let(:admin) { build(:admin) }
@@ -97,34 +97,34 @@ describe AssignmentsController do
     before(:each) do
       allow(AssignmentForm).to receive(:new).with(any_args).and_return(assignment_form)
       @params = {
-        button: '',
-        assignment_form: {
-          assignment_questionnaire: [{"assignment_id" => "1", "questionnaire_id" => "666", "dropdown" => "true",
-                                      "questionnaire_weight" => "100", "notification_limit" => "15", "used_in_round" => "1"}],
-          due_date: [{"id" => "", "parent_id" => "", "round" => "1", "deadline_type_id" => "1", "due_at" => "2017/12/05 00:00", "submission_allowed_id" => "3", "review_allowed_id" => "1", "teammate_review_allowed_id" => "3", "review_of_review_allowed_id" => "1", "threshold" => "1"},
-                     {"id" => "", "parent_id" => "", "round" => "1", "deadline_type_id" => "2", "due_at" => "2017/12/02 00:00", "submission_allowed_id" => "1", "review_allowed_id" => "3", "teammate_review_allowed_id" => "3", "review_of_review_allowed_id" => "1", "threshold" => "1"}],
-          assignment: {
-            instructor_id: 2,
-            course_id: 1,
-            max_team_size: 1,
-            id: 1,
-            name: 'test assignment',
-            directory_path: '/test',
-            spec_location: '',
-            private: false,
-            show_teammate_reviews: false,
-            require_quiz: false,
-            num_quiz_questions: 0,
-            staggered_deadline: false,
-            microtask: false,
-            reviews_visible_to_all: false,
-            is_calibrated: false,
-            availability_flag: true,
-            reputation_algorithm: 'Lauw',
-            simicheck: -1,
-            simicheck_threshold: 100
+          button: '',
+          assignment_form: {
+              assignment_questionnaire: [{"assignment_id" => "1", "questionnaire_id" => "666", "dropdown" => "true",
+                                          "questionnaire_weight" => "100", "notification_limit" => "15", "used_in_round" => "1"}],
+              due_date: [{"id" => "", "parent_id" => "", "round" => "1", "deadline_type_id" => "1", "due_at" => "2017/12/05 00:00", "submission_allowed_id" => "3", "review_allowed_id" => "1", "teammate_review_allowed_id" => "3", "review_of_review_allowed_id" => "1", "threshold" => "1"},
+                         {"id" => "", "parent_id" => "", "round" => "1", "deadline_type_id" => "2", "due_at" => "2017/12/02 00:00", "submission_allowed_id" => "1", "review_allowed_id" => "3", "teammate_review_allowed_id" => "3", "review_of_review_allowed_id" => "1", "threshold" => "1"}],
+              assignment: {
+                  instructor_id: 2,
+                  course_id: 1,
+                  max_team_size: 1,
+                  id: 1,
+                  name: 'test assignment',
+                  directory_path: '/test',
+                  spec_location: '',
+                  private: false,
+                  show_teammate_reviews: false,
+                  require_quiz: false,
+                  num_quiz_questions: 0,
+                  staggered_deadline: false,
+                  microtask: false,
+                  reviews_visible_to_all: false,
+                  is_calibrated: false,
+                  availability_flag: true,
+                  reputation_algorithm: 'Lauw',
+                  simicheck: -1,
+                  simicheck_threshold: 100
+              }
           }
-        }
       }
     end
     context 'when assignment_form is saved successfully' do
@@ -132,12 +132,11 @@ describe AssignmentsController do
         allow(assignment_form).to receive(:assignment).and_return(assignment)
         allow(assignment_form).to receive(:save).and_return(true)
         allow(assignment_form).to receive(:update).with(any_args).and_return(true)
-        allow(assignment_form).to receive(:add_instructor_as_participant).with(any_args).and_return(true)
         allow(assignment_form).to receive(:create_assignment_node).and_return(double('node'))
         allow(assignment).to receive(:id).and_return(1)
         allow(Assignment).to receive(:find_by).with(name: 'test assignment').and_return(assignment)
         allow_any_instance_of(AssignmentsController).to receive(:undo_link)
-          .with('Assignment "test assignment" has been created successfully. ').and_return(true)
+                                                            .with('Assignment "test assignment" has been created successfully. ').and_return(true)
         post :create, @params
         expect(response).to redirect_to('/assignments/1/edit')
       end
@@ -150,19 +149,6 @@ describe AssignmentsController do
         expect(response).to render_template(:new)
       end
     end
-
-    context 'when "Add yourself as a participant?" checkbox is selected' do
-      it 'adds instructor as a participant to the newly created assignment' do
-        allow(assignment_form).to receive(:assignment).and_return(assignment)
-        allow(assignment_form).to receive(:is_instructor_a_participant).with(any_args).and_return(false)
-        is_instructor_participant = false
-        if params[:add_instructor] == 1 and is_instructor_participant == false
-          allow(assignment_form).to receive(:add_participant).with(any_args).and_return(true)
-        end
-        post :create, @params
-
-      end
-    end
   end
 
   describe '#edit' do
@@ -170,7 +156,7 @@ describe AssignmentsController do
       it 'shows an error flash message and renders edit page' do
         allow(SignUpTopic).to receive(:where).with(assignment_id: '1').and_return([double('SignUpTopic'), double('SignUpTopic')])
         allow(AssignmentQuestionnaire).to receive(:where).with(assignment_id: '1')
-          .and_return([double('AssignmentQuestionnaire', questionnaire_id: 666, used_in_round: 1)])
+                                              .and_return([double('AssignmentQuestionnaire', questionnaire_id: 666, used_in_round: 1)])
         allow(Questionnaire).to receive(:where).with(id: 666).and_return([double('Questionnaire', type: 'ReviewQuestionnaire')])
         assignment_due_date = build(:assignment_due_date)
         allow(AssignmentDueDate).to receive(:where).with(parent_id: '1').and_return([assignment_due_date])
@@ -195,10 +181,9 @@ describe AssignmentsController do
         it 'shows a note flash message and redirects to tree_display#index page' do
           allow(assignment).to receive(:save).and_return(true)
           params = {
-            id: 1,
-            course_id: 1
+              id: 1,
+              course_id: 1
           }
-          allow(assignment_form).to receive(:add_instructor_as_participant).with(any_args).and_return(true)
           session = {user: instructor}
           post :update, params, session
           expect(flash[:note]).to eq('The assignment was successfully saved.')
@@ -210,8 +195,8 @@ describe AssignmentsController do
         it 'shoes an error flash message and redirects to assignments#edit page' do
           allow(assignment).to receive(:save).and_return(false)
           params = {
-            id: 1,
-            course_id: 1
+              id: 1,
+              course_id: 1
           }
           session = {user: instructor}
           post :update, params, session
@@ -227,35 +212,35 @@ describe AssignmentsController do
         allow(AssignmentQuestionnaire).to receive(:new).with(any_args).and_return(assignment_questionnaire)
         allow(assignment_questionnaire).to receive(:save).and_return(true)
         @params = {
-          id: 1,
-          course_id: 1,
-          set_pressed: {
-            bool: 'true'
-          },
-          assignment_form: {
-            assignment_questionnaire: [{"assignment_id" => "1", "questionnaire_id" => "666", "dropdown" => "true",
-                                        "questionnaire_weight" => "100", "notification_limit" => "15", "used_in_round" => "1"}],
-            assignment: {
-              instructor_id: 2,
-              course_id: 1,
-              max_team_size: 1,
-              id: 2,
-              name: 'test assignment',
-              directory_path: '/test',
-              spec_location: '',
-              show_teammate_reviews: false,
-              require_quiz: false,
-              num_quiz_questions: 0,
-              staggered_deadline: false,
-              microtask: false,
-              reviews_visible_to_all: false,
-              is_calibrated: false,
-              availability_flag: true,
-              reputation_algorithm: 'Lauw',
-              simicheck: -1,
-              simicheck_threshold: 100
+            id: 1,
+            course_id: 1,
+            set_pressed: {
+                bool: 'true'
+            },
+            assignment_form: {
+                assignment_questionnaire: [{"assignment_id" => "1", "questionnaire_id" => "666", "dropdown" => "true",
+                                            "questionnaire_weight" => "100", "notification_limit" => "15", "used_in_round" => "1"}],
+                assignment: {
+                    instructor_id: 2,
+                    course_id: 1,
+                    max_team_size: 1,
+                    id: 2,
+                    name: 'test assignment',
+                    directory_path: '/test',
+                    spec_location: '',
+                    show_teammate_reviews: false,
+                    require_quiz: false,
+                    num_quiz_questions: 0,
+                    staggered_deadline: false,
+                    microtask: false,
+                    reviews_visible_to_all: false,
+                    is_calibrated: false,
+                    availability_flag: true,
+                    reputation_algorithm: 'Lauw',
+                    simicheck: -1,
+                    simicheck_threshold: 100
+                }
             }
-          }
         }
       end
       context 'when the timezone preference of current user is nil and assignment form updates attributes successfully' do
@@ -342,8 +327,8 @@ describe AssignmentsController do
         allow(AssignmentForm).to receive(:new).and_return(assignment_form)
         allow(assignment_form).to receive(:delete).with('true').and_return(true)
         params = {
-          id: 1,
-          force: 'true'
+            id: 1,
+            force: 'true'
         }
         session = {user: instructor}
         post :delete, params, session
@@ -359,8 +344,8 @@ describe AssignmentsController do
         allow(AssignmentForm).to receive(:new).and_return(assignment_form)
         allow(assignment_form).to receive(:delete).with('true').and_raise('You cannot delete this assignment!')
         params = {
-          id: 1,
-          force: 'true'
+            id: 1,
+            force: 'true'
         }
         session = {user: instructor}
         post :delete, params, session
