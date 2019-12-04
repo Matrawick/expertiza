@@ -1,7 +1,7 @@
 describe AssignmentsController do
   let(:assignment) do
     build(:assignment, id: 1, name: 'test assignment', instructor_id: 6, staggered_deadline: true, directory_path: 'same path',
-                       participants: [build(:participant)], teams: [build(:assignment_team)], course_id: 1)
+                       participants: [build(:participant)], teams: [build(:assignment_team)], course_id: 1, add_instructor: 1)
   end
   let(:assignment_form) { double('AssignmentForm', assignment: assignment) }
   let(:admin) { build(:admin) }
@@ -155,7 +155,9 @@ describe AssignmentsController do
     context 'when "Add yourself as a participant?" checkbox is selected' do
       it 'adds instructor as a participant to the newly created assignment' do
         allow(assignment_form).to receive(:assignment).and_return(assignment)
-        if params[:add_instructor] == '1' and is_instructor_a_participant? == false
+        allow(assignment_form).to receive(:is_instructor_a_participant).with(any_args).and_return(false)
+        is_instructor_participant = false
+        if params[:add_instructor] == 1 and is_instructor_participant == false
           allow(assignment_form).to receive(:add_participant).with(any_args).and_return(true)
         end
         post :create, @params
