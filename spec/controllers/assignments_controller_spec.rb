@@ -1,7 +1,7 @@
 describe AssignmentsController do
   let(:assignment) do
     build(:assignment, id: 1, name: 'test assignment', instructor_id: 6, staggered_deadline: true, directory_path: 'same path',
-                       participants: [build(:participant)], teams: [build(:assignment_team)], course_id: 1, add_instructor: 1)
+                       participants: [build(:participant)], teams: [build(:assignment_team)], course_id: 1)
   end
   let(:assignment_form) { double('AssignmentForm', assignment: assignment) }
   let(:admin) { build(:admin) }
@@ -122,8 +122,7 @@ describe AssignmentsController do
             availability_flag: true,
             reputation_algorithm: 'Lauw',
             simicheck: -1,
-            simicheck_threshold: 100,
-            add_instructor: 1
+            simicheck_threshold: 100
           }
         }
       }
@@ -254,8 +253,7 @@ describe AssignmentsController do
               availability_flag: true,
               reputation_algorithm: 'Lauw',
               simicheck: -1,
-              simicheck_threshold: 100,
-              add_instructor: 1
+              simicheck_threshold: 100
             }
           }
         }
