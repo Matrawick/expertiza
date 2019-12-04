@@ -155,14 +155,8 @@ describe AssignmentsController do
     context 'when "Add yourself as a participant?" checkbox is selected' do
       it 'adds instructor as a participant to the newly created assignment' do
         allow(assignment_form).to receive(:assignment).and_return(assignment)
-        allow(assignment_form).to receive(:is_instructor_a_participant).with(any_args).and_return(false)
-        is_instructor_participant = false
-        add_instructor = 1
-        if add_instructor == 1 and is_instructor_participant == false
-          allow(assignment_form).to receive(:add_participant).with(any_args).and_return(true)
-        end
-        post :create, @params
-
+        allow(assignment_form).to receive(:add_participant).with(any_args).and_return(true)
+        post :add_participant
       end
     end
   end
