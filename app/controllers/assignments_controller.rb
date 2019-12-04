@@ -3,6 +3,7 @@ class AssignmentsController < ApplicationController
   autocomplete :user, :name
   before_action :authorize
   helper_method :is_instructor_a_participant?
+  
   def action_allowed?
     if %w[edit update list_submissions].include? params[:action]
       assignment = Assignment.find(params[:id])
@@ -149,32 +150,6 @@ class AssignmentsController < ApplicationController
     end
 
     redirect_to list_tree_display_index_path
-  end
-
-  def add_instructor_as_participant(assignment_id)
-    if params[:add_instructor] == 'false' and is_instructor_a_participant? == true
-      delete_instructor_as_participant(assignment_id,session[:user].id)
-    elsif params[:add_instructor] == '1' and is_instructor_a_participant? == false
-      current_assignment = Object.const_get("Assignment").find(assignment_id)
-      current_assignment.add_participant(session[:user].name, true, true, true)
-    end
-  end
-
-  def is_instructor_a_participant?
-    instructor_id = session[:user].id
-    assignment_id = @assignment_form.assignment.id.to_s
-
-    if assignment_id != nil
-      @is_instructor_a_participant = Participant.where(user_id: instructor_id , parent_id: assignment_id)
-      if @is_instructor_a_participant.present?
-        return true
-      end
-    end
-    return false
-  end
-
-  def delete_instructor_as_participant(assignment_id , instructor_id)
-    Participant.where(user_id: instructor_id , parent_id: assignment_id).destroy_all
   end
 
   def delayed_mailer
@@ -405,10 +380,33 @@ class AssignmentsController < ApplicationController
     ExpertizaLogger.info LoggerMessage.new("", session[:user].name, "The assignment was saved: #{@assignment_form.as_json}", request)
   end
 
+  def add_instructor_as_participant(assignment_id)
+    if params[:add_instructor] == 'false' and is_instructor_a_participant? == true
+      delete_instructor_as_participant(assignment_id,session[:user].id)
+    elsif params[:add_instructor] == '1' and is_instructor_a_participant? == false
+      current_assignment = Object.const_get("Assignment").find(assignment_id)
+      current_assignment.add_participant(session[:user].name, true, true, true)
+    end
+  end
 
+  def is_instructor_a_participant?
+    instructor_id = session[:user].id
+    assignment_id = @assignment_form.assignment.id.to_s
+
+    if assignment_id != nil
+      @is_instructor_a_participant = Participant.where(user_id: instructor_id , parent_id: assignment_id)
+      if @is_instructor_a_participant.present?
+        return true
+      end
+    end
+    return false
+  end
+
+  def delete_instructor_as_participant(assignment_id , instructor_id)
+    Participant.where(user_id: instructor_id , parent_id: assignment_id).destroy_all
+  end
 
   def assignment_form_params
     params.require(:assignment_form).permit!
   end
 end
-
