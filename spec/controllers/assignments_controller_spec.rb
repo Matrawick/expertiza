@@ -151,13 +151,6 @@ describe AssignmentsController do
         expect(response).to render_template(:new)
       end
     end
-
-    context 'when "Add yourself as a participant?" checkbox is selected' do
-      it 'adds instructor as a participant to the newly created assignment' do
-        allow(assignment_form).to receive(:add_participant).with(any_args).and_return(true)
-        post :add_instructor_as_participant
-      end
-    end
   end
 
   describe '#edit' do
@@ -365,4 +358,12 @@ describe AssignmentsController do
       end
     end
   end
+
+  context 'when "Add yourself as a participant?" checkbox is selected' do
+    it 'adds instructor as a participant to the newly created assignment' do
+      allow(assignment_form).to receive(:add_participant).with(any_args).and_return(true)
+      post :add_instructor_as_participant
+    end
+  end
+
 end
