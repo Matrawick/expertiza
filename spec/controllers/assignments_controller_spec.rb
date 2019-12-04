@@ -360,7 +360,7 @@ describe AssignmentsController do
   end
 
   context 'when "Add yourself as a participant?" checkbox is selected' do
-    it 'adds instructor as a participant to the newly created assignment' do
+    it 'calls add_instructor_as_participant which in turn calls add Participant method of Participant controller' do
       allow(assignment_form).to receive(:add_participant).with(any_args).and_return(true)
     end
   end
