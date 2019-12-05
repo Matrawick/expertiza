@@ -32,3 +32,4 @@ describe "instructor review testing" do
     visit "/assignments/list_submissions?id=#{assignment.id}"
     expect(page).to have_content 'Begin Review'
   end
+end
